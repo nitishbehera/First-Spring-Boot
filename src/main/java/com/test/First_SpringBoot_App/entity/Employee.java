@@ -13,14 +13,15 @@ import lombok.NoArgsConstructor;
 public class Employee {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;//Auto Increment value, primary key
     private String name;
-    private  String department;
+    private String department;
     private String email;
     private String phoneNumber;
     private String salary;
     private String city;
+
 
     public Long getId() {
         return id;
