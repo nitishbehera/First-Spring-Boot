@@ -45,5 +45,18 @@ public class EmployeeController {
         return ResponseEntity.ok(allEmployees);
     }
 
+    //http://localhost:8085/api/employees/update/1
+    @PutMapping("/update/{id}")
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long id
+            , @RequestBody EmployeeDto employeeDto) {
+        EmployeeDto updatedEmployee = employeeService.updateEmployee(id, employeeDto);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteEmployee(@PathVariable Long id){
+        employeeService.deleteEmployee(id);
+    }
+
 
 }

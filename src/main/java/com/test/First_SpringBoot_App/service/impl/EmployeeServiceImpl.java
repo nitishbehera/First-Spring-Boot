@@ -2,6 +2,7 @@ package com.test.First_SpringBoot_App.service.impl;
 
 import com.test.First_SpringBoot_App.dto.EmployeeDto;
 import com.test.First_SpringBoot_App.entity.Employee;
+import com.test.First_SpringBoot_App.exception.EmployeeNotFoundException;
 import com.test.First_SpringBoot_App.repository.EmployeeRepository;
 import com.test.First_SpringBoot_App.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto findById(Long id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not Found with given Id!!"));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not Found with given id!!" +"= "+id));
         EmployeeDto employeeDto = convertToDto(employee);
         return employeeDto;
     }
@@ -47,6 +48,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findByCity(city)
                 .stream()
                 .map(e -> convertToDto(e)).collect(Collectors.toList());
+    }
+
+    @Override
+    public EmployeeDto updateEmployee(Long employeeId, EmployeeDto employeeDto) {
+        Employee existingEmployee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not Found with given id!!" +"= "+employeeId));
+        //Update fields from DTO
+        existingEmployee.setName(employeeDto.getName());
+        existingEmployee.setDepartment(employeeDto.getDepartment());
+        existingEmployee.setEmail(employeeDto.getEmail());
+        existingEmployee.setPhoneNumber(employeeDto.getPhoneNumber());
+        existingEmployee.setSalary(employeeDto.getSalary());
+        existingEmployee.setCity(employeeDto.getCity());
+
+        Employee updatedEmployee = employeeRepository.save(existingEmployee);
+         return convertToDto(updatedEmployee);
+
+    }
+
+    @Override
+    public void deleteEmployee(Long employeeId) {
+        Employee existingEmployee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not Found with given id!!" +"= "+employeeId));
+        employeeRepository.deleteById(employeeId);
+
     }
 
     private static EmployeeDto convertToDto(Employee employee) {

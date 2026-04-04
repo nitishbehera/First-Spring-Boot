@@ -13,7 +13,9 @@ public interface EmployeeService {
 
     public List<EmployeeDto> findByCity(String city);
 
-//    public EmployeeDto findAllEmployee();
-//    public EmployeeDto updateEmployee();
-//    public void deleteEmployee();
+    public EmployeeDto updateEmployee(Long employeeId, EmployeeDto employeeDto);
+
+    void deleteEmployee(Long id);
+
+
 }
